@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import config from '@/config';
 import { ConnectOptions } from 'mongoose';
-
+import { logger } from '@/lib/winston';
 const clientOptions: ConnectOptions = {
   dbName: 'blogger',
   appName: 'blogger',
@@ -18,9 +18,9 @@ export const connectToDatabase = async (): Promise<void> => {
   }
   try {
     await mongoose.connect(config.DATABASE_URL as string, clientOptions);
-    console.log('Connected to MongoDB successfully ✅');
+    logger.info('Connected to MongoDB successfully ✅');
   } catch (error) {
-    console.error('Error connecting to MongoDB:', error);
+    logger.error('Error connecting to MongoDB:', error);
     throw error;
   }
 };
@@ -28,9 +28,9 @@ export const connectToDatabase = async (): Promise<void> => {
 export const disconnectFromDatabase = async (): Promise<void> => {
   try {
     await mongoose.disconnect();
-    console.log('Disconnected from MongoDB successfully ✅');
+    logger.info('Disconnected from MongoDB successfully ✅');
   } catch (error) {
-    console.error('Error disconnecting from MongoDB:', error);
+    logger.error('Error disconnecting from MongoDB:', error);
 
     throw error;
   }
