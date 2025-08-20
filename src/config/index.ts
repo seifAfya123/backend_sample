@@ -4,6 +4,9 @@ import type ms from 'ms';
 dotenv.config();
 
 const config = {
+  VERSION: process.env.VERSION || '1.0.0',
+  APP_NAME: process.env.APP_NAME || 'blogger',
+  // Server configuration
   PORT: process.env.PORT || 3000,
   NODE_ENV: process.env.NODE_ENV || 'development',
   DATABASE_URL: process.env.DATABASE_URL,
