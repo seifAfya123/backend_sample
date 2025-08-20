@@ -4,8 +4,13 @@ import config from '@/config';
 
 import { IUser } from '@/models/users';
 import User from '@/models/users';
-import { hashPassword } from '@/lib/jwt';
+import {
+  hashPassword,
+  generateAcessToken,
+  generateRefreshToken,
+} from '@/lib/jwt';
 import { log } from 'winston';
+import RefreshToken from '@/models/token';
 
 type UserType = Pick<IUser, 'username' | 'email' | 'password' | 'role'>;
 
@@ -19,8 +24,22 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
       password: passwordHash,
       role,
     });
-
     logger.info('POST /register route accessed', { body: user });
+
+
+    const refreshToken = generateRefreshToken(user._id);
+    await RefreshToken.create({
+      userId: user._id,
+      refreshToken,
+    });
+    logger.info('POST /register route accessed', { body: refreshToken });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: config.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+
     res.status(200).json({
       message: 'Registration successful',
     });
