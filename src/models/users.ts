@@ -33,14 +33,23 @@ const userSchema = new Schema<IUser>(
     password: { type: String, required: [true, 'Pasword is required'] },
     role: { type: String, enum: ['Admin', 'User'], default: 'User' },
     sociallinks: {
-      facebook: { type: String, required: [true, 'facebook url is required'] },
-      x: { type: String, required: [true, 'x url is required'] },
+      facebook: {
+        type: String,
+        maxlinght: [100, 'x can not be more than 100 char'],
+      },
+      x: { type: String, maxlinght: [100, 'x can not be more than 100 char'] },
       instagram: {
         type: String,
-        required: [true, 'instagram url is required'],
+        maxlinght: [100, 'instagram can not be more than 100 char'],
       },
-      linkedin: { type: String, required: [true, 'linkedin url is required'] },
-      website: { type: String, required: [true, 'website is required'] },
+      linkedin: {
+        type: String,
+        maxlinght: [100, 'linkedin can not be more than 100 char'],
+      },
+      website: {
+        type: String,
+        maxlinght: [100, 'website can not be more than 100 char'],
+      },
     },
   },
 
