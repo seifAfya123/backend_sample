@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 
 router.post('/register', validateBody(registerSchema), registerUser);
 router.post('/login', validateBody(loginSchema), loginUser);
-router.put('/logout',verifyAccessTokenMiddleware, logoutUser);
+router.put('/logout/:userid',verifyAccessTokenMiddleware, logoutUser);
 
 
 

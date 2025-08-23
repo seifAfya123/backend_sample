@@ -4,11 +4,19 @@ import { logger } from '@/lib/winston';
 import config from '@/config';
 import RefreshTokenDB from '@/models/token';
 import { log } from 'winston';
+import { Types } from 'mongoose';
 
 const logoutUser = async (req: Request, res: Response): Promise<void> => {
   try {
+
     const { userid } = req.params as { userid: string };
-    const user = await User.findById(userid);
+    
+    if (!Types.ObjectId.isValid(userid)) {
+      res.status(400).json({ message: 'Invalid user ID format' });
+      return;
+    }
+
+    const user = await RefreshTokenDB.findOne({ userId: userid });
     if (!user) {
       res
         .status(404)
@@ -16,7 +24,8 @@ const logoutUser = async (req: Request, res: Response): Promise<void> => {
       logger.warn('User not found', { userid });
       return;
     }
-    RefreshTokenDB.deleteOne({ userId: user._id });
+
+    await RefreshTokenDB.deleteOne({ userId: user._id });
 
     // Clear the refresh token cookie
     res.clearCookie('refreshToken', {
@@ -29,7 +38,7 @@ const logoutUser = async (req: Request, res: Response): Promise<void> => {
       message: 'Logout successful',
     });
 
-    logger.info('User logged out successfully', { userid });
+    // logger.info('User logged out successfully', { userid });
   } catch (error) {
     res.status(500).json({
       message: 'Internal server error',
