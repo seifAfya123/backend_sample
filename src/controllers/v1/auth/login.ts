@@ -7,12 +7,15 @@ import User from '@/models/users';
 import RefreshTokenDB from '@/models/token';
 import { hashPassword, checkPassword } from '@/lib/jwt';
 import { generateAcessToken, generateRefreshToken } from '@/lib/jwt';
+import { findUserByEmail } from '@/services/v1/usersService';
+
 type LoginUserType = Pick<IUser, 'email' | 'password'>;
 
 const loginUser = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body as LoginUserType;
 
   try {
+    // const user = await findUserByEmail(email) ;
     const user = await User.findOne({ email });
     if (!user) {
       res
@@ -45,7 +48,6 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
         refreshToken,
       });
     }
-    
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,

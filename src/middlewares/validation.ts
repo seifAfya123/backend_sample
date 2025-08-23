@@ -22,8 +22,8 @@ const validationErrorMessage = (error: Joi.ValidationError) => {
 export const validateBody = (schema: Joi.ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const { error, value } = schema.validate(req.body, {
-      abortEarly: true, // collect all errors w true y3ny noo
-      stripUnknown: true, // remove fields not in schema
+      abortEarly: true, 
+      stripUnknown: true,
     });
 
     if (error) {
@@ -33,7 +33,7 @@ export const validateBody = (schema: Joi.ObjectSchema) => {
       });
     }
 
-    req.body = value; // sanitized data
+    req.body = value;
     next();
   };
 };

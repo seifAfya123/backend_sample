@@ -9,7 +9,6 @@ import {
   generateAcessToken,
   generateRefreshToken,
 } from '@/lib/jwt';
-import { log } from 'winston';
 import RefreshToken from '@/models/token';
 
 type UserType = Pick<IUser, 'username' | 'email' | 'password' | 'role'>;
