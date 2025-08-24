@@ -9,12 +9,9 @@ import config from '@/config';
 import loginUser from '@/controllers/v1/auth/login';
 import logoutUser from '@/controllers/v1/auth/logout';
 import verifyAccessTokenMiddleware from '@/middlewares/verification';
-//
+
 const router = Router();
-
-
-
-router.get('/', (req, res) => {
+router.get('/all', (req, res) => {
   res.status(200).json({
     message: 'Auth api is working',
     version: config.VERSION,
@@ -22,11 +19,3 @@ router.get('/', (req, res) => {
   });
   logger.info('GET /auth/ route accessed');
 });
-
-router.post('/register', validateBody(registerSchema), registerUser);
-router.post('/login', validateBody(loginSchema), loginUser);
-router.put('/logout/:userid',verifyAccessTokenMiddleware, logoutUser);
-
-
-
-export default router;

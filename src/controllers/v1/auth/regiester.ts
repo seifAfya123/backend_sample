@@ -13,6 +13,24 @@ import RefreshToken from '@/models/token';
 
 type UserType = Pick<IUser, 'username' | 'email' | 'password' | 'role'>;
 
+/**
+ * @swagger
+ * /api/auth/:
+ *   post:
+ *     summary: Create a user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User created
+ */
 const registerUser = async (req: Request, res: Response): Promise<void> => {
   const { username, email, password, role } = req.body as UserType;
   try {

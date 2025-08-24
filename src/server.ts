@@ -8,7 +8,7 @@ import config from '@/config';
 import limiter from '@/lib/express_rate_limit';
 import v1Routes from '@/routes/v1';
 import { connectToDatabase, disconnectFromDatabase } from '@/lib/mongodb';
-import {logger} from '@/lib/winston';
+import { logger } from '@/lib/winston';
 //Node Modules
 import express from 'express';
 import cors from 'cors';
@@ -18,6 +18,9 @@ import helmet from 'helmet';
 
 // types
 import type { CorsOptions } from 'cors';
+import swaggerUi from 'swagger-ui-express';
+// Import your actual Swagger docs object, update the path if needed
+import { setupSwagger } from './swagger';
 
 const app = express();
 const corsOptions: CorsOptions = {
@@ -47,12 +50,12 @@ app.use(
 app.use(helmet());
 app.use(limiter);
 
-
 (async () => {
   try {
     await connectToDatabase();
-    app.use('/api/v1', v1Routes);
 
+    app.use('/api/v1', v1Routes);
+    setupSwagger(app);
     app.listen(config.PORT, () => {
       logger.info(`server running at http://localhost:${config.PORT}`);
     });
